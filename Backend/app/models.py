@@ -9,7 +9,6 @@ class User(Base):
     id = Column(BigInteger, primary_key=True, nullable=False)
     phone_num = Column(String(20), nullable=False, unique=True)
     role = Column(String(20), nullable=False)
-    user_name = Column(String(50), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False,
                         server_default=text("now()"))

@@ -18,11 +18,10 @@ import {
 import Loader from './Components/Loader';
 
 const RegisterScreen = (props) => {
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
+
+    const [phoneNum, setPhoneNum] = useState('')
   const [userPassword, setUserPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('')
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [
@@ -30,62 +29,46 @@ const RegisterScreen = (props) => {
     setIsRegistraionSuccess
   ] = useState(false);
 
-  const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const addressInputRef = createRef();
+//   const emailInputRef = createRef();
+//   const ageInputRef = createRef();
+//   const addressInputRef = createRef();
   const passwordInputRef = createRef();
 
   const handleSubmitButton = () => {
     setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userAddress) {
-      alert('Please fill Address');
-      return;
+    if (!phoneNum){
+        alert("Please fill Phone Number")
+        return
     }
     if (!userPassword) {
       alert('Please fill Password');
       return;
     }
+    if (!repeatPassword){
+        alert("Please fill Repeat Password")
+        return
+    }
     //Show Loader
     setLoading(true);
     var dataToSend = {
-      name: userName,
-      email: userEmail,
-      age: userAge,
-      address: userAddress,
+      phone_num: phoneNum,
       password: userPassword,
+      repeat_password: repeatPassword,
+      role: "consumer"
     };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
 
-    fetch('http://localhost:3000/api/user/register', {
+    fetch('http://localhost:8000/api/auth/signup', {
       method: 'POST',
-      body: formBody,
+      body: JSON.stringify(dataToSend),
       headers: {
         //Header Defination
-        'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
+        'Content-Type':'application/json',
       },
     })
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
+        alert(responseJson)
         setLoading(false);
         console.log(responseJson);
         // If server response message same as Data Matched
@@ -156,32 +139,15 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserName) => setUserName(UserName)}
+              onChangeText={(phoneNum) => setPhoneNum(phoneNum)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Name"
+              placeholder="Enter Phone Number"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               returnKeyType="next"
-              onSubmitEditing={() =>
-                emailInputRef.current && emailInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Email"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="email-address"
-              ref={emailInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                passwordInputRef.current &&
-                passwordInputRef.current.focus()
-              }
+            //   onSubmitEditing={() =>
+            //     emailInputRef.current && emailInputRef.current.focus()
+            //   }
               blurOnSubmit={false}
             />
           </View>
@@ -194,46 +160,30 @@ const RegisterScreen = (props) => {
               underlineColorAndroid="#f000"
               placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
-              ref={passwordInputRef}
+            //   ref={passwordInputRef}
               returnKeyType="next"
               secureTextEntry={true}
-              onSubmitEditing={() =>
-                ageInputRef.current &&
-                ageInputRef.current.focus()
-              }
+            //   onSubmitEditing={() =>
+            //     ageInputRef.current &&
+            //     ageInputRef.current.focus()
+            //   }
               blurOnSubmit={false}
             />
           </View>
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAge) => setUserAge(UserAge)}
+              onChangeText={(repeatPassword) => setRepeatPassword(repeatPassword)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Age"
+              placeholder="Enter Repeat Password"
               placeholderTextColor="#8b9cb5"
               keyboardType="numeric"
-              ref={ageInputRef}
+            //   ref={ageInputRef}
               returnKeyType="next"
-              onSubmitEditing={() =>
-                addressInputRef.current &&
-                addressInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(UserAddress) =>
-                setUserAddress(UserAddress)
-              }
-              underlineColorAndroid="#f000"
-              placeholder="Enter Address"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={addressInputRef}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
+            //   onSubmitEditing={() =>
+            //     addressInputRef.current &&
+            //     addressInputRef.current.focus()
+            //   }
               blurOnSubmit={false}
             />
           </View>
