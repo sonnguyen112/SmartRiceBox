@@ -1,4 +1,4 @@
-// Example of Splash, Login and Sign Up in React Native
+``// Example of Splash, Login and Sign Up in React Native
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
@@ -27,7 +27,7 @@ const SplashScreen = ({navigation}) => {
           value === null ? 'Auth' : 'DrawerNavigationRoutes'
         ),
       );
-    }, 1000);
+    }, 5000);
   }, []);
 
   return (
