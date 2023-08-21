@@ -20,7 +20,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 const LoginScreen = ({ navigation }) => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const [loading, setLoading] = useState(false);
     const [errortext, setErrortext] = useState('');
 
     const passwordInputRef = createRef();
@@ -35,7 +34,6 @@ const LoginScreen = ({ navigation }) => {
             alert('Please fill Password');
             return;
         }
-        setLoading(true);
         let dataToSend = { email: userEmail, password: userPassword };
         let formBody = [];
         for (let key in dataToSend) {
@@ -57,7 +55,6 @@ const LoginScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 //Hide Loader
-                setLoading(false);
                 console.log(responseJson);
                 // If server response message same as Data Matched
                 if (responseJson.status === 'success') {
