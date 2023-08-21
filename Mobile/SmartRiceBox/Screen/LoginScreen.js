@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React, {useState, createRef} from 'react';
+import React, { useState, createRef } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -18,19 +18,20 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Loader from './Components/Loader';
+import { API_URL } from '@env'
 
-const LoginScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
+const LoginScreen = ({ navigation }) => {
+  const [phoneNum, setPhoneNum] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
 
   const passwordInputRef = createRef();
 
-  const handleSubmitPress = () => {
+  const handleSubmitPress = async () => {
     setErrortext('');
-    if (!userEmail) {
-      alert('Please fill Email');
+    if (!phoneNum) {
+      alert('Please fill Phone Number');
       return;
     }
     if (!userPassword) {
@@ -38,46 +39,34 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     setLoading(true);
-    let dataToSend = {email: userEmail, password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+    let dataToSend = { phone_num: phoneNum, password: userPassword };
 
-    // fetch('http://localhost:3000/api/user/login', {
-    //   method: 'POST',
-    //   body: formBody,
-    //   headers: {
-    //     //Header Defination
-    //     'Content-Type':
-    //     'application/x-www-form-urlencoded;charset=UTF-8',
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.log(responseJson);
-    //     // If server response message same as Data Matched
-    //     if (responseJson.status === 'success') {
-    //       AsyncStorage.setItem('user_id', responseJson.data.email);
-    //       console.log(responseJson.data.email);
-    //       navigation.replace('DrawerNavigationRoutes');
-    //     } else {
-    //       setErrortext(responseJson.msg);
-    //       console.log('Please check your email id or password');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     //Hide Loader
-    //     setLoading(false);
-    //     console.error(error);
-    //   });
-    setLoading(false);
-    navigation.replace('DrawerNavigationRoutes');
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        body: JSON.stringify(dataToSend),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const responseJson = await response.json()
+      setLoading(false)
+      console.log(responseJson)
+      if (response.status === 200) {
+        AsyncStorage.setItem('token', responseJson.access_token);
+        console.log(responseJson.access_token)
+        navigation.replace('DrawerNavigationRoutes')
+      }
+      else {
+        setErrortext(responseJson.detail)
+        console.log('Please check your email id or password');
+      }
+    }
+    catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   };
 
   return (
@@ -92,7 +81,7 @@ const LoginScreen = ({navigation}) => {
         }}>
         <View>
           <KeyboardAvoidingView enabled>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <Image
                 source={require('../Image/viettel.png')}
                 style={{
@@ -106,13 +95,13 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(UserEmail) =>
-                  setUserEmail(UserEmail)
+                onChangeText={(phoneNum) =>
+                  setPhoneNum(phoneNum)
                 }
-                placeholder="Enter Email" //dummy@abc.com
+                placeholder="Enter Phone Number" //dummy@abc.com
                 placeholderTextColor="#8b9cb5"
                 autoCapitalize="none"
-                keyboardType="email-address"
+                keyboardType="numeric"
                 returnKeyType="next"
                 onSubmitEditing={() =>
                   passwordInputRef.current &&

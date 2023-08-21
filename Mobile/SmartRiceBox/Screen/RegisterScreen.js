@@ -2,7 +2,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React, {useState, createRef} from 'react';
+import React, { useState, createRef } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -16,10 +16,11 @@ import {
 } from 'react-native';
 
 import Loader from './Components/Loader';
+import {API_URL} from "@env"
 
 const RegisterScreen = (props) => {
 
-    const [phoneNum, setPhoneNum] = useState('')
+  const [phoneNum, setPhoneNum] = useState('')
   const [userPassword, setUserPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('')
   const [loading, setLoading] = useState(false);
@@ -29,24 +30,28 @@ const RegisterScreen = (props) => {
     setIsRegistraionSuccess
   ] = useState(false);
 
-//   const emailInputRef = createRef();
-//   const ageInputRef = createRef();
-//   const addressInputRef = createRef();
+  //   const emailInputRef = createRef();
+  //   const ageInputRef = createRef();
+  //   const addressInputRef = createRef();
   const passwordInputRef = createRef();
 
-  const handleSubmitButton = () => {
+  const handleSubmitButton = async () => {
     setErrortext('');
-    if (!phoneNum){
-        alert("Please fill Phone Number")
-        return
+    if (!phoneNum) {
+      alert("Please fill Phone Number")
+      return
     }
     if (!userPassword) {
       alert('Please fill Password');
       return;
     }
-    if (!repeatPassword){
-        alert("Please fill Repeat Password")
-        return
+    if (!repeatPassword) {
+      alert("Please fill Repeat Password")
+      return
+    }
+    if (repeatPassword !== userPassword) {
+      alert("Password and repeat password must be same")
+      return
     }
     //Show Loader
     setLoading(true);
@@ -57,35 +62,33 @@ const RegisterScreen = (props) => {
       role: "consumer"
     };
 
-    fetch('http://localhost:8000/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(dataToSend),
-      headers: {
-        //Header Defination
-        'Content-Type':'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Hide Loader
-        alert(responseJson)
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          setIsRegistraionSuccess(true);
-          console.log(
-            'Registration Successful. Please Login to proceed'
-          );
-        } else {
-          setErrortext(responseJson.msg);
-        }
+    try {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
+        method: 'POST',
+        body: JSON.stringify(dataToSend),
+        headers: {
+          //Header Defination
+          'Content-Type': 'application/json',
+        },
       })
-      .catch((error) => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
+
+      var responseJson = await response.json()
+      setLoading(false)
+      console.log(responseJson)
+
+      if (response.status === 201) {
+        setIsRegistraionSuccess(true);
+        console.log(
+          'Registration Successful. Please Login to proceed'
+        );
+      }
+      else {
+        setErrortext(responseJson.detail)
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   };
   if (isRegistraionSuccess) {
     return (
@@ -116,7 +119,7 @@ const RegisterScreen = (props) => {
     );
   }
   return (
-    <View style={{flex: 1, backgroundColor: '#307ecc'}}>
+    <View style={{ flex: 1, backgroundColor: '#307ecc' }}>
       <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -124,7 +127,7 @@ const RegisterScreen = (props) => {
           justifyContent: 'center',
           alignContent: 'center',
         }}>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Image
             source={require('../Image/viettel.png')}
             style={{
@@ -145,9 +148,10 @@ const RegisterScreen = (props) => {
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               returnKeyType="next"
-            //   onSubmitEditing={() =>
-            //     emailInputRef.current && emailInputRef.current.focus()
-            //   }
+              keyboardType="numeric"
+              //   onSubmitEditing={() =>
+              //     emailInputRef.current && emailInputRef.current.focus()
+              //   }
               blurOnSubmit={false}
             />
           </View>
@@ -160,13 +164,13 @@ const RegisterScreen = (props) => {
               underlineColorAndroid="#f000"
               placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
-            //   ref={passwordInputRef}
+              //   ref={passwordInputRef}
               returnKeyType="next"
               secureTextEntry={true}
-            //   onSubmitEditing={() =>
-            //     ageInputRef.current &&
-            //     ageInputRef.current.focus()
-            //   }
+              //   onSubmitEditing={() =>
+              //     ageInputRef.current &&
+              //     ageInputRef.current.focus()
+              //   }
               blurOnSubmit={false}
             />
           </View>
@@ -177,13 +181,14 @@ const RegisterScreen = (props) => {
               underlineColorAndroid="#f000"
               placeholder="Enter Repeat Password"
               placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-            //   ref={ageInputRef}
+              //   ref={ageInputRef}
               returnKeyType="next"
-            //   onSubmitEditing={() =>
-            //     addressInputRef.current &&
-            //     addressInputRef.current.focus()
-            //   }
+              secureTextEntry={true}
+
+              //   onSubmitEditing={() =>
+              //     addressInputRef.current &&
+              //     addressInputRef.current.focus()
+              //   }
               blurOnSubmit={false}
             />
           </View>
