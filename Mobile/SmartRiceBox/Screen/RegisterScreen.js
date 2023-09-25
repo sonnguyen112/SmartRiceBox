@@ -72,6 +72,7 @@ const RegisterScreen = (props) => {
         },
       })
 
+      console.log(response)
       var responseJson = await response.json()
       setLoading(false)
       console.log(responseJson)

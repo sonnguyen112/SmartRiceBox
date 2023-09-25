@@ -13,7 +13,11 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
+import ScanQRScreen from "./Screen/ScanQRScreen"
+import SetUpRiceBoxScreen from './Screen/SetUpRiceBoxScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
+import RiceBoxDetail from './Screen/RiceBoxDetail';
+import registerNNPushToken from 'native-notify';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +49,8 @@ const Auth = () => {
 };
 
 const App = () => {
+  registerNNPushToken(12544, 'E7ZuZRkeUzZrSmf6B2Gjrd');
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
@@ -65,6 +71,24 @@ const App = () => {
         <Stack.Screen
           name="DrawerNavigationRoutes"
           component={DrawerNavigationRoutes}
+          // Hiding header for Navigation Drawer
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ScanQRScreen"
+          component={ScanQRScreen}
+          // Hiding header for Navigation Drawer
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SetUpRiceBoxScreen"
+          component={SetUpRiceBoxScreen}
+          // Hiding header for Navigation Drawer
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RiceBoxDetail"
+          component={RiceBoxDetail}
           // Hiding header for Navigation Drawer
           options={{headerShown: false}}
         />

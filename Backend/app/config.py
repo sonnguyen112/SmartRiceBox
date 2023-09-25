@@ -11,6 +11,11 @@ class Settings(BaseSettings):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
+    thingsboard_username:str
+    thingsboard_password:str
+    opencage_api_key:str
+    thingsboard_url:str
+    mapbox_api:str
 
     class Config:
         env_file = ".env"

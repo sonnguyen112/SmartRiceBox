@@ -17,13 +17,17 @@ def create_user(user:schemas.UserCreate, db: Session = Depends(get_db)):
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
      
-    new_user = models.User(**user.model_dump())
+    new_user = models.User(
+        phone_num = user.phone_num,
+        password = user.password,
+        role = user.role
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
 
-@router.post("/login", response_model=schemas.Token)
+@router.post("/login", response_model=schemas.Token, status_code=status.HTTP_200_OK)
 def login(user_cred:schemas.UserLogin,db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.phone_num == user_cred.phone_num).first()
     if not user:
