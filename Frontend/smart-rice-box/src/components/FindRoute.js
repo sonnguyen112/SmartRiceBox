@@ -43,15 +43,16 @@ export default function AlternateTimeline(props) {
   }, [])
 
   useEffect(() => {
-    if (data && markers) {
+    if (data !== null&& markers !== null) {
       setLoading(false)
     }
   }, [data])
 
 
   useEffect(() => {
-    if (markers && data) {
+    if (markers !== null && data !== null) {
       var tempBound = []
+      console.log(markers)
       for (var marker of markers) {
         tempBound.push([marker.position.lng, marker.position.lat])
       }

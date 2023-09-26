@@ -1,7 +1,7 @@
 import socket
 import json
 
-def udp_client(message, server_ip='localhost', server_port=12345):
+def udp_client(message, server_ip='115.78.92.253', server_port=12345):
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     client.sendto(message.encode(), (server_ip, server_port))
     data, addr = client.recvfrom(1024)

@@ -19,8 +19,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import Loader from './Components/Loader';
 import { API_URL } from '@env'
-import { registerIndieID } from 'native-notify';
-import axios from 'axios';
 
 const LoginScreen = ({ navigation }) => {
   const [phoneNum, setPhoneNum] = useState('');
@@ -55,9 +53,6 @@ const LoginScreen = ({ navigation }) => {
       setLoading(false)
       console.log(responseJson)
       if (response.status === 200) {
-           // Native Notify Indie Push Registration Code
-          registerIndieID(phoneNum, 12544, 'E7ZuZRkeUzZrSmf6B2Gjrd');
-          // End of Native Notify Code
         AsyncStorage.setItem('token', responseJson.access_token);
         console.log(responseJson.access_token)
         navigation.replace('DrawerNavigationRoutes')
