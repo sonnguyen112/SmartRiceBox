@@ -40,6 +40,10 @@ class GetRiceBoxRes(BaseModel):
     current_humidity: Optional[int] = None
     current_temperature: Optional[int] = None
     url_dashboard:str
+    house_num_street: str
+    ward: str
+    district : str
+    city : str
 
 
 class UpdateRiceBoxRes(BaseModel):

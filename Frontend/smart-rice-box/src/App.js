@@ -14,8 +14,8 @@ function App() {
   // })
 
   const Map = ReactMapboxGl({
-    accessToken:
-      'pk.eyJ1Ijoic29ubmd1eWVuMTEyIiwiYSI6ImNsbXZ0Zmk1ZDBhbm8ycWx2MzcwZjF1dGIifQ.-QxT3xmENUtZoE6F97ZWzg'
+    accessToken: process.env.REACT_APP_MAP_BOX_API
+      
   });
 
 

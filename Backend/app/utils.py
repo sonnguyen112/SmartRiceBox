@@ -14,14 +14,19 @@ def verify(plain_password, hash_password):
 
 def build_graph(rice_boxs):
     try:
-        query_api = ["106.705339, 10.753545"]
+        storage_lng = 106.69495369143044
+        storage_lat = 10.767071077096517
+        query_api = [f"{storage_lng},{storage_lat}"]
         for e in rice_boxs:
             query_api.append(f"{e.longitude},{e.latitude}")
         query_api = ";".join(query_api)
         print(query_api)
         matrix_duration = requests.get(
             f"https://api.mapbox.com/directions-matrix/v1/mapbox/driving/{query_api}?access_token={settings.mapbox_api}"
-        ).json()["durations"]
+        )
+        matrix_duration = matrix_duration.json()
+        print(matrix_duration)
+        matrix_duration = matrix_duration["durations"]
         graph = {}
         for i in range(len(matrix_duration)):
             for j in range(len(matrix_duration)):
@@ -32,12 +37,12 @@ def build_graph(rice_boxs):
         return graph
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=400,
-                            detail="Error in build graph")
+        return None
     
 
 def find_shortest_route(rice_boxs):
     graph = build_graph(rice_boxs)
+    if (graph is None): return []
     lengh_path,shortest_path = ChristofidesAlgorithm.tsp(graph)
     result = []
     for i in range(1, len(shortest_path)-1):

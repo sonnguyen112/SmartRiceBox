@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "fb162fc3-85f9-4336-b11a-bef53c135356"
+      }
+    },
+    "android": {
+      "package": "com.sonnguyen112.smartricebox"
+    }
+  }
+}
