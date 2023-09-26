@@ -7,6 +7,7 @@ import { Text } from 'react-native-paper';
 import { Alert } from 'react-native';
 import React from 'react';
 import { API_URL } from '@env'
+import { Image } from 'react-native';
 
 export default function RiceBoxDetail(props) {
     console.log(props.route.params.url_dashboard)
@@ -60,6 +61,9 @@ export default function RiceBoxDetail(props) {
             </Button>
             <View style={{alignItems:"center", justifyContent:"center", marginTop:50}}>
             <Text variant="headlineLarge">Thông tin thùng gạo</Text>
+            </View>
+            <View>
+              <Image source={require("../Image/rice_10.png")}></Image>
             </View>
             <WebView
                 originWhitelist={['*']}

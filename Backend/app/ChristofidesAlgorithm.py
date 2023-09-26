@@ -148,7 +148,7 @@ def minimum_weight_matching(MST, G, odd_vert):
 
 def find_eulerian_tour(MatchedMSTree, G):
     adj = [0] * len(G)
-    for i in range(len(MatchedMSTree)):
+    for i in range(len(G)):
         adj[i] = []
     for e in MatchedMSTree:
         adj[e[0]].append(e[1])

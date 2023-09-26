@@ -12,7 +12,7 @@ from . import models
 
 
 class ThreadedUDPServer:
-    def __init__(self, host='localhost', port=12345):
+    def __init__(self, host='0.0.0.0', port=12345):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.server.bind((host, port))
 
@@ -122,7 +122,7 @@ class ThreadedUDPServer:
         if update_response.ok:
             device_query = db.query(models.RiceBox).filter(
                 models.RiceBox.access_token == data["imei"])
-            if (data["rice_amount"] > device_query.first().current_rice_amount + 20):
+            if (device_query.first().current_rice_amount != None and data["rice_amount"] > device_query.first().current_rice_amount + 10):
                 device_query.update({
                     "current_rice_amount": data["rice_amount"],
                     "current_humidity": data["humidity"],
@@ -138,28 +138,32 @@ class ThreadedUDPServer:
                     "current_temperature": data["temperature"]
                 })
                 db.commit()
-            if (data["rice_amount"] <= device_query.first().alarm_rice_threshold):
+            if (device_query.first().alarm_rice_threshold != None and data["rice_amount"] <= device_query.first().alarm_rice_threshold):
                 self.push_notification(device_query.first())
             self.server.sendto("OK".encode(), addr)
         else:
             self.server.sendto("ERROR".encode(), addr)
 
     def push_notification(self, rice_box, db: Session = next(get_db())):
-        url = "https://app.nativenotify.com/api/indie/notification"
 
-        payload = json.dumps({
-            "subID": db.query(models.User).filter(models.User.id == rice_box.owner_id).first().phone_num,
-            "appId": 12544,
-            "appToken": "E7ZuZRkeUzZrSmf6B2Gjrd",
-            "title": "Thông báo về số lượng gạo",
-            "message": f'Thùng gạo với tên "{rice_box.name}" của bạn sắp hết, vui lòng sử dụng chức năng mua thêm gạo trong ứng dụng để chúng tôi nhanh chóng cung cấp gạo cho bạn nhé. Xin trân trong cảm ơn bạn. Chúc bạn một ngày tốt lành!'
-        })
-        headers = {
-            'Content-Type': 'application/json'
-        }
+        try:
+            url = "https://app.nativenotify.com/api/indie/notification"
 
-        response = requests.request("POST", url, headers=headers, data=payload)
-        print(response.text)
+            payload = json.dumps({
+                "subID": db.query(models.User).filter(models.User.id == rice_box.owner_id).first().phone_num,
+                "appId": 12544,
+                "appToken": "E7ZuZRkeUzZrSmf6B2Gjrd",
+                "title": "Thông báo về số lượng gạo",
+                "message": f'Thùng gạo với tên "{rice_box.name}" của bạn sắp hết, vui lòng sử dụng chức năng mua thêm gạo trong ứng dụng để chúng tôi nhanh chóng cung cấp gạo cho bạn nhé. Xin trân trong cảm ơn bạn. Chúc bạn một ngày tốt lành!'
+            })
+            headers = {
+                'Content-Type': 'application/json'
+            }
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.text)
+        except Exception as e:
+            print(e)
 
     def handle_client(self, data, addr, db: Session = next(get_db())):
         data = json.loads(data.decode())

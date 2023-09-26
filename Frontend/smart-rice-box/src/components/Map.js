@@ -86,8 +86,10 @@ useEffect(() => {
         height: '100vh',
         width: '100vw'
       }}
-      fitBounds={bound.length > 0 ? bound : null}
-      fitBoundsOptions={{padding:400}}
+      // fitBounds={bound.length > 0 ? bound : null}
+      center = {[106.69102, 10.782568]}
+      zoom = {[15]}
+      // fitBoundsOptions={{padding:400}}
     >
 
       {markers.map(marker => {

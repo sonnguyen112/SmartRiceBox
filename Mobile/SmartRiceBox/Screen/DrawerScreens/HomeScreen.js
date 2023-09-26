@@ -28,7 +28,8 @@ const DATA = [
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, { backgroundColor }]}>
     <View style={{ flex: 1, justifyContent: "center" }}>
-      <Text style={[styles.title, { color: textColor }]}>{item.name}</Text>
+      <Text style={[styles.title, { color: textColor, fontSize:25 }]}>{item.name}</Text>
+      <Text style={[styles.title, { color: textColor }]}>{`${item.house_num_street}, ${item.ward}, ${item.district}, ${item.city}`}</Text>
     </View>
     <View style={{ flex: 1 / 2, flexDirection: "col" }}>
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 14,
   },
   centeredView: {
     flex: 1,

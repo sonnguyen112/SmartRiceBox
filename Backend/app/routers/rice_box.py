@@ -98,16 +98,19 @@ def get_data_table(db: Session = Depends(get_db)):
     rice_boxs = db.query(models.RiceBox).filter(or_(models.RiceBox.current_rice_amount <=
                                                 models.RiceBox.alarm_rice_threshold, models.RiceBox.have_buy_rice_request == True)).all()
     for e in rice_boxs:
-        response.append(
-            {
-                "imei": e.access_token,
-                "address": f"{e.house_num_street}, {e.ward}, {e.district}, {e.city}",
-                "phone_num": db.query(models.User).filter(models.User.id == e.owner_id).first().phone_num,
-                "status_request": e.have_buy_rice_request,
-                "is_tick": e.tick_deliver,
-                "amount": e.current_rice_amount
-            }
-        )
+        try:
+            response.append(
+                {
+                    "imei": e.access_token,
+                    "address": f"{e.house_num_street}, {e.ward}, {e.district}, {e.city}",
+                    "phone_num": db.query(models.User).filter(models.User.id == e.owner_id).first().phone_num,
+                    "status_request": e.have_buy_rice_request,
+                    "is_tick": e.tick_deliver,
+                    "amount": e.current_rice_amount
+                }
+            )
+        except Exception as e:
+            print(e)
     return response
 
 
@@ -132,15 +135,18 @@ def find_route(db: Session = Depends(get_db)):
     shortest_route = utils.find_shortest_route(rice_boxs)
     response = []
     for e in shortest_route:
-        response.append(
-            {
-                "address": f"{e.house_num_street}, {e.ward}, {e.district}, {e.city}",
-                "phone": db.query(models.User).filter(e.owner_id==models.User.id).first().phone_num,
-                "id": e.id,
-                "position" : {
-                    "lat": e.latitude,
-                    "lng": e.longitude
+        try:
+            response.append(
+                {
+                    "address": f"{e.house_num_street}, {e.ward}, {e.district}, {e.city}",
+                    "phone": db.query(models.User).filter(e.owner_id==models.User.id).first().phone_num,
+                    "id": e.id,
+                    "position" : {
+                        "lat": e.latitude,
+                        "lng": e.longitude
+                    }
                 }
-            }
-        )
+            )
+        except Exception as e:
+            print("Error", e)
     return response

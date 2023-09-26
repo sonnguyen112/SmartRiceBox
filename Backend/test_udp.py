@@ -1,7 +1,8 @@
 import socket
 import json
+import uuid
 
-def udp_client(message, server_ip='localhost', server_port=12345):
+def udp_client(message, server_ip='115.78.92.253', server_port=12345):
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     client.sendto(message.encode(), (server_ip, server_port))
     data, addr = client.recvfrom(1024)
@@ -9,9 +10,11 @@ def udp_client(message, server_ip='localhost', server_port=12345):
 
 if __name__ == "__main__":
     data = {
-        "imei" : "1415672829129",
-        "rice_amount": 5,
-        "humidity": 100,
-        "temperature": 100
+        "imei" : "868333032606946",
+        "rice_amount": 18,
+        "humidity": 60,
+        "temperature": 30,
+        "rsrp":0
     }
+    print(json.dumps(data))
     udp_client(json.dumps(data))
