@@ -53,7 +53,7 @@ const SettingScreenStack = ({navigation}) => {
         headerStyle: {
           backgroundColor: '#307ecc', //Set Header color
         },
-        headerTintColor: '#fff', //Set Header text color
+        headerTintColor: 'blue', //Set Header text color
         headerTitleStyle: {
           fontWeight: 'bold', //Set Header text style
         },
@@ -73,7 +73,7 @@ const DrawerNavigatorRoutes = (props) => {
   return (
     <Drawer.Navigator
       screenOptions={{
-        activeTintColor: '#cee1f2',
+        activeTintColor: 'white',
         color: '#cee1f2',
         itemStyle: {marginVertical: 5, color: 'white'},
         labelStyle: {
@@ -86,11 +86,6 @@ const DrawerNavigatorRoutes = (props) => {
         name="homeScreenStack"
         options={{drawerLabel: 'Home Screen'}}
         component={HomeScreenStack}
-      />
-      <Drawer.Screen
-        name="settingScreenStack"
-        options={{drawerLabel: 'Setting Screen'}}
-        component={SettingScreenStack}
       />
     </Drawer.Navigator>
   );

@@ -193,6 +193,23 @@ const RegisterScreen = (props) => {
               blurOnSubmit={false}
             />
           </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              underlineColorAndroid="#f000"
+              placeholder="Enter Adress"
+              placeholderTextColor="#8b9cb5"
+              //   ref={ageInputRef}
+              returnKeyType="next"
+              secureTextEntry={true}
+
+              //   onSubmitEditing={() =>
+              //     addressInputRef.current &&
+              //     addressInputRef.current.focus()
+              //   }
+              blurOnSubmit={false}
+            />
+          </View>
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}>
               {errortext}

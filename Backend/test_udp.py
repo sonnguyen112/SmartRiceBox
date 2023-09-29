@@ -10,8 +10,8 @@ def udp_client(message, server_ip='115.78.92.253', server_port=12345):
 
 if __name__ == "__main__":
     data = {
-        "imei" : "868333032606946",
-        "rice_amount": 18,
+        "imei" : "868333032606955",
+        "rice_amount": 100,
         "humidity": 60,
         "temperature": 30,
         "rsrp":0

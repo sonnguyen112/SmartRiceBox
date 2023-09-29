@@ -103,7 +103,8 @@ const HomeScreen = (props) => {
         onPress={() => {
           props.navigation.navigate("RiceBoxDetail", {
             rice_box_id: item.id,
-            url_dashboard: item.url_dashboard
+            url_dashboard: item.url_dashboard,
+            cur_amount:item.current_rice_amount
           })
         }}
         backgroundColor={backgroundColor}

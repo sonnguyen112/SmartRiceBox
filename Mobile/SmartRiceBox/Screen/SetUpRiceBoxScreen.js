@@ -201,6 +201,8 @@ const SetUpRiceBoxScreen = (props) => {
           );
           const responseCitysJson = await responseCitys.json();
           setCitys(responseCitysJson);
+          setLong(106.6800212)
+          setLat(10.7778364)
           setLoading(false)
           return
         }
