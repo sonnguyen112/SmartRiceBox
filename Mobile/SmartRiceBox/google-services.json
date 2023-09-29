@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "249731295823",
+    "project_id": "smartricebox-24b21",
+    "storage_bucket": "smartricebox-24b21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249731295823:android:6e695f340490f86d8c583a",
+        "android_client_info": {
+          "package_name": "com.sonnguyen112.SmartRiceBox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmlmzTrQGNMjyB4OYpkecuEZjMViZfm-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

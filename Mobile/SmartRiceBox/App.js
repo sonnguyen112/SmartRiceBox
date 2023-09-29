@@ -17,6 +17,9 @@ import ScanQRScreen from "./Screen/ScanQRScreen"
 import SetUpRiceBoxScreen from './Screen/SetUpRiceBoxScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
 import RiceBoxDetail from './Screen/RiceBoxDetail';
+import { useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { View, Text, Button } from 'react-native';
 import registerNNPushToken from 'native-notify';
 
 const Stack = createStackNavigator();
@@ -50,7 +53,6 @@ const Auth = () => {
 
 const App = () => {
   registerNNPushToken(12544, 'E7ZuZRkeUzZrSmf6B2Gjrd');
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
